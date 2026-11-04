@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Diwali | Visionary Staffing Solutions LLP - Pune</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a051b;
+      --gold: #ffcf40;
+      --gold-glow: #ff9100;
+      --cyan: #00bcd4;
+      --green: #26a69a;
+      --card-bg: rgba(255, 255, 255, 0.06);
+      --card-border: rgba(255, 207, 64, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #fwCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 1;
+      pointer-events: auto;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      pointer-events: none;
+    }
+
+    .interactive-element { pointer-events: auto; }
+
+    header { text-align: center; }
+
+    .company-title-card {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 207, 64, 0.3);
+      backdrop-filter: blur(12px);
+      padding: 24px 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 207, 64, 0.15);
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .company-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      background: linear-gradient(135deg, #fff 30%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+
+    .office-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 4px 16px;
+      border-radius: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .hero-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4.5rem;
+      background: linear-gradient(45deg, #ffe082, #ffb300, #ff6f00, #ffe082);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 6s ease infinite, pulse 3s infinite alternate;
+      margin-top: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: #e0e0e0;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    .diya-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 30px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .diya-section h2 {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .diyas-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .diya-wrapper {
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .diya-wrapper:hover { transform: translateY(-8px) scale(1.05); }
+
+    .diya-svg {
+      width: 70px;
+      height: 70px;
+      filter: drop-shadow(0 0 8px rgba(0,0,0,0.5));
+    }
+
+    .flame {
+      transform-origin: center bottom;
+      transition: opacity 0.4s ease;
+      opacity: 0;
+    }
+
+    .diya-wrapper.lit .flame {
+      opacity: 1;
+      animation: flicker 0.15s infinite alternate ease-in-out;
+    }
+
+    .diya-label { font-size: 0.75rem; color: #ccc; margin-top: 6px; }
+
+    .md-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255, 207, 64, 0.4);
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .md-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 16px;
+    }
+
+    .md-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 700; color: #fff;
+    }
+
+    .md-info h3 { font-size: 1.4rem; color: var(--gold); font-weight: 700; }
+    .md-info p { font-size: 0.9rem; color: #b0bec5; }
+
+    .md-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #e2e8f0;
+      font-weight: 300;
+    }
+
+    .md-body p { margin-bottom: 14px; }
+    .md-signature {
+      margin-top: 24px;
+      text-align: right;
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem;
+      color: var(--gold);
+    }
+
+    .actions-panel {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-glow) 100%);
+      color: #0a051b;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 145, 0, 0.4);
+      transition: all 0.3s ease;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .btn:hover { transform: translateY(-3px) scale(1.03); }
+
+    .wish-wall-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 30px;
+      width: 100%;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .wish-wall-section h2 {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .wish-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .wish-input {
+      flex: 1;
+      padding: 12px 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .wishes-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 240px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .wish-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid var(--gold);
+      padding: 12px 16px;
+      border-radius: 0 12px 12px 0;
+      font-size: 0.9rem;
+    }
+
+    .wish-card strong { color: var(--cyan); display: block; margin-bottom: 2px; }
+
+    .brand-footer-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .brand-footer-links a {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .brand-footer-links a:hover { color: var(--gold); }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #90a4ae;
+      margin-top: 20px;
+      padding-bottom: 20px;
+    }
+
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 12px #ff9100); }
+      100% { transform: scale(1.15) rotate(2deg); filter: drop-shadow(0 0 18px #ffcf40); }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.03); }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="fwCanvas"></canvas>
+
+  <div class="container">
+    
+    <!-- Clean Company Title Header -->
+    <header class="interactive-element">
+      <div class="company-title-card">
+        <h2 class="company-name">Visionary Staffing Solutions LLP</h2>
+      </div>
+      <div>
+        <span class="office-badge">Pune Office</span>
+      </div>
+      <h1 class="hero-title">Happy Diwali!</h1>
+      <p class="hero-subtitle">Warmest Diwali Wishes from Girish Sahane 🪔</p>
+    </header>
+
+    <!-- Diya Section (Unlit by default, click to light up) -->
+    <section class="diya-section interactive-element">
+      <h2>✨ Click each Diya to light up the office ✨</h2>
+      <div class="diyas-row">
+        <div class="diya-wrapper" onclick="toggleDiya(this)">
+          <svg class="diya-svg" viewBox="0 0 100 100">
+            <g class="flame"><path d="M50 10 Q35 35 50 50 Q65 35 50 10 Z" fill="#ffeb3b"/><path d="M50 20 Q42 35 50 45 Q58 35 50 20 Z" fill="#ff9100"/></g>
+            <path d="M20 55 C20 75 80 75 80 55 C70 50 30 50 20 55 Z" fill="#d87a24"/><path d="M15 55 Q50 85 85 55 Q50 62 15 55 Z" fill="#ff9800"/><ellipse cx="50" cy="54" rx="30" ry="5" fill="#8d6e63"/>
+          </svg>
+          <span class="diya-label">Growth</span>
+        </div>
+        <div class="diya-wrapper" onclick="toggleDiya(this)">
+          <svg class="diya-svg" viewBox="0 0 100 100">
+            <g class="flame"><path d="M50 10 Q35 35 50 50 Q65 35 50 10 Z" fill="#ffeb3b"/><path d="M50 20 Q42 35 50 45 Q58 35 50 20 Z" fill="#ff9100"/></g>
+            <path d="M20 55 C20 75 80 75 80 55 C70 50 30 50 20 55 Z" fill="#d87a24"/><path d="M15 55 Q50 85 85 55 Q50 62 15 55 Z" fill="#ff9800"/><ellipse cx="50" cy="54" rx="30" ry="5" fill="#8d6e63"/>
+          </svg>
+          <span class="diya-label">Innovation</span>
+        </div>
+        <div class="diya-wrapper" onclick="toggleDiya(this)">
+          <svg class="diya-svg" viewBox="0 0 100 100" style="transform: scale(1.15);">
+            <g class="flame"><path d="M50 10 Q35 35 50 50 Q65 35 50 10 Z" fill="#ffeb3b"/><path d="M50 20 Q42 35 50 45 Q58 35 50 20 Z" fill="#ff9100"/></g>
+            <path d="M20 55 C20 75 80 75 80 55 C70 50 30 50 20 55 Z" fill="#b71c1c"/><path d="M15 55 Q50 85 85 55 Q50 62 15 55 Z" fill="#ff2a2a"/><ellipse cx="50" cy="54" rx="30" ry="5" fill="#ffcf40"/>
+          </svg>
+          <span class="diya-label" style="color:var(--gold); font-weight:600;">Prosperity</span>
+        </div>
+        <div class="diya-wrapper" onclick="toggleDiya(this)">
+          <svg class="diya-svg" viewBox="0 0 100 100">
+            <g class="flame"><path d="M50 10 Q35 35 50 50 Q65 35 50 10 Z" fill="#ffeb3b"/><path d="M50 20 Q42 35 50 45 Q58 35 50 20 Z" fill="#ff9100"/></g>
+            <path d="M20 55 C20 75 80 75 80 55 C70 50 30 50 20 55 Z" fill="#d87a24"/><path d="M15 55 Q50 85 85 55 Q50 62 15 55 Z" fill="#ff9800"/><ellipse cx="50" cy="54" rx="30" ry="5" fill="#8d6e63"/>
+          </svg>
+          <span class="diya-label">Teamwork</span>
+        </div>
+        <div class="diya-wrapper" onclick="toggleDiya(this)">
+          <svg class="diya-svg" viewBox="0 0 100 100">
+            <g class="flame"><path d="M50 10 Q35 35 50 50 Q65 35 50 10 Z" fill="#ffeb3b"/><path d="M50 20 Q42 35 50 45 Q58 35 50 20 Z" fill="#ff9100"/></g>
+            <path d="M20 55 C20 75 80 75 80 55 C70 50 30 50 20 55 Z" fill="#d87a24"/><path d="M15 55 Q50 85 85 55 Q50 62 15 55 Z" fill="#ff9800"/><ellipse cx="50" cy="54" rx="30" ry="5" fill="#8d6e63"/>
+          </svg>
+          <span class="diya-label">Success</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MD Message Card -->
+    <article class="md-card interactive-element">
+      <div class="md-header">
+        <div class="md-avatar">GS</div>
+        <div class="md-info">
+          <h3>Girish Sahane</h3>
+          <p>Managing Director — Visionary Staffing Solutions LLP</p>
+        </div>
+      </div>
+      <div class="md-body">
+        <p>Dear Team & Partners,</p>
+        <p>As we celebrate Diwali, the festival of light, wisdom, and new beginnings, I want to extend my heartfelt gratitude to each member of our VSS Pune family. Your dedication, resilience, and unwavering commitment continue to illuminate our pathway toward excellence in recruitment operations and staffing solutions.</p>
+        <p>May this auspicious season light up your lives with health, happiness, and abundant success. Together, let us continue to innovate, empower talent, and achieve new milestones in the coming year.</p>
+        <p>Wishing you and your families a joyous, prosperous, and safe Diwali!</p>
+      </div>
+      <div class="md-signature">Girish Sahane</div>
+    </article>
+
+    <!-- Actions -->
+    <div class="actions-panel interactive-element">
+      <button class="btn" onclick="triggerBurst()">🚀 Launch Grand Fireworks</button>
+    </div>
+
+    <!-- Team Wishes Wall -->
+    <section class="wish-wall-section interactive-element">
+      <h2>🪔 VSS Pune Team Wish Wall</h2>
+      <div class="wish-form">
+        <input type="text" id="nameInput" class="wish-input" placeholder="Your Name" style="max-width: 160px;">
+        <input type="text" id="messageInput" class="wish-input" placeholder="Share your festive message with the team...">
+        <button class="btn" onclick="addWish()" style="padding: 10px 20px;">Post</button>
+      </div>
+      <div class="wishes-container" id="wishesContainer">
+        <div class="wish-card">
+          <strong>Girish Sahane (Managing Director)</strong>
+          Wishing our phenomenal VSS team a sparkling, prosperous, and joyful Diwali! Let's keep raising the benchmark together.
+        </div>
+        <div class="wish-card">
+          <strong>Pune Operations Team</strong>
+          Wishing everyone at VSS a shining and prosperous Diwali filled with happiness!
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer with Official Links -->
+    <footer class="interactive-element">
+      <div class="brand-footer-links">
+        <a href="mailto:info@visionarystaffingsolutions.in">✉️ info@visionarystaffingsolutions.in</a>
+        <a href="https://www.linkedin.com/company/visionary-staffing-solutions-llp" target="_blank">🔗 LinkedIn Company Page</a>
+      </div>
+      <p style="margin-top: 15px;">&copy; 2026 Visionary Staffing Solutions LLP. Built for VSS Pune Office Celebration.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    const canvas = document.getElementById('fwCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x; this.y = y; this.color = color;
+        this.radius = Math.random() * 2.5 + 1;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 6 + 1;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.alpha = 1;
+        this.decay = Math.random() * 0.02 + 0.01;
+        this.gravity = 0.08;
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.restore();
+      }
+      update() {
+        this.x += this.vx; this.y += this.vy;
+        this.vy += this.gravity; this.alpha -= this.decay;
+      }
+    }
+
+    let particles = [];
+    const colors = ['#ffcf40', '#ff9100', '#00bcd4', '#26a69a', '#ff4081', '#ffffff'];
+
+    function createFirework(x, y) {
+      for (let i = 0; i < 60; i++) {
+        particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+      }
+    }
+
+    function animate() {
+      ctx.fillStyle = 'rgba(10, 5, 27, 0.2)';
+      ctx.fillRect(0, 0, width, height);
+      particles = particles.filter(p => p.alpha > 0);
+      particles.forEach(p => { p.update(); p.draw(); });
+      if (Math.random() < 0.03) createFirework(Math.random() * width, Math.random() * (height * 0.6));
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('click', (e) => createFirework(e.clientX, e.clientY));
+
+    function triggerBurst() {
+      confetti({ particleCount: 120, spread: 100, origin: { y: 0.6 }, colors: ['#ffcf40', '#ff9100', '#00bcd4', '#26a69a', '#ffffff'] });
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => createFirework(Math.random() * width * 0.8 + width * 0.1, Math.random() * height * 0.5 + height * 0.1), i * 200);
+      }
+    }
+
+    function toggleDiya(element) {
+      element.classList.toggle('lit');
+      if (element.classList.contains('lit')) {
+        confetti({ particleCount: 25, spread: 40, origin: { x: element.getBoundingClientRect().left / window.innerWidth + 0.03, y: element.getBoundingClientRect().top / window.innerHeight + 0.03 } });
+      }
+    }
+
+    function addWish() {
+      const nameInput = document.getElementById('nameInput');
+      const msgInput = document.getElementById('messageInput');
+      const container = document.getElementById('wishesContainer');
+      const name = nameInput.value.trim() || 'VSS Team Member';
+      const msg = msgInput.value.trim();
+      if (!msg) { alert('Please write a message before posting!'); return; }
+      const wishCard = document.createElement('div');
+      wishCard.className = 'wish-card';
+      wishCard.innerHTML = `<strong>${escapeHtml(name)}</strong>${escapeHtml(msg)}`;
+      container.prepend(wishCard);
+      msgInput.value = '';
+      triggerBurst();
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' }[m]));
+    }
+  </script>
+</body>
+</html>
