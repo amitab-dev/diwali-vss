@@ -1,3 +1,5 @@
+import Image from "next/image";
+import vcLogo from "@/static/VC.png";
 import { BurstButton } from "./_components/burst-button";
 import { DiyaSection } from "./_components/diyas";
 import { FireworksCanvas } from "./_components/fireworks";
@@ -11,13 +13,11 @@ export default function Home() {
       <div className="container">
         <header className="interactive-element">
           <div className="company-title-card">
+            <Image src={vcLogo} alt="Visionary Staffing Solutions logo" className="company-logo" priority />
             <h2 className="company-name">Visionary Staffing Solutions LLP</h2>
           </div>
-          <div>
-            <span className="office-badge">Pune Office</span>
-          </div>
           <h1 className="hero-title">Happy Diwali!</h1>
-          <p className="hero-subtitle">Warmest Diwali Wishes from Girish Sahane 🪔</p>
+          <p className="hero-subtitle">Warmest Diwali Wishes from Visionary Staffing Solutions 🪔</p>
         </header>
 
         <DiyaSection />
