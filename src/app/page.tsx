@@ -17,7 +17,7 @@ export default function Home() {
             <span className="office-badge">Pune Office</span>
           </div>
           <h1 className="hero-title">Happy Diwali!</h1>
-          <p className="hero-subtitle">Warmest Diwali Wishes from Girish Sahane 🪔</p>
+          <p className="hero-subtitle">Warmest Diwali Wishes from Visionary Staffing Solutions 🪔</p>
         </header>
 
         <DiyaSection />
